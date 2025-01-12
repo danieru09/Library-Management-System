@@ -1,4 +1,5 @@
-package Admin;
+package LibrarySystem;
+
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,6 +11,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.border.MatteBorder;
@@ -54,6 +57,7 @@ public class AdminDashboard extends JFrame {
 	 */
 	public AdminDashboard() {
 		initialize();
+		
 	}
 
 	/**
@@ -113,10 +117,12 @@ public class AdminDashboard extends JFrame {
 		lblNewLabel_5.setForeground(new Color(255, 255, 255));
 		lblNewLabel_5.setFont(new Font("Yu Gothic UI Light", Font.PLAIN, 15));
 		
+
 		textField = new JTextField();
 		textField.setBounds(0, 25, 147, 20);
 		panel_4.add(textField);
 		textField.setColumns(10);
+		
 		
 		JPanel panel_4_1 = new JPanel();
 		panel_4_1.setLayout(null);
@@ -124,7 +130,7 @@ public class AdminDashboard extends JFrame {
 		panel_4_1.setBounds(43, 122, 147, 45);
 		panel_3.add(panel_4_1);
 		
-		JLabel lblNewLabel_5_1 = new JLabel("ENTER BOOK NAME: ");
+		JLabel lblNewLabel_5_1 = new JLabel("ENTER BOOK : ");
 		lblNewLabel_5_1.setForeground(Color.WHITE);
 		lblNewLabel_5_1.setFont(new Font("Yu Gothic UI Light", Font.PLAIN, 15));
 		lblNewLabel_5_1.setBounds(0, 0, 147, 14);
@@ -198,17 +204,7 @@ public class AdminDashboard extends JFrame {
 		btnMember.setBounds(48, 182, 154, 38);
 		panel_1.add(btnMember);
 		
-				btnMember.addActionListener(new ActionListener() {
-				    @Override
-				    public void actionPerformed(ActionEvent e) {
-				        // Create an instance of AddUser and display it
-				        AddUser addUser = new AddUser();
-				        addUser.setVisible(true); // Assuming AddUser extends JFrame
-		
-				        // Dispose of the current AdminDashboard frame
-				        dispose();
-				    }
-				});
+				
 		
 		JLabel lblNewLabel_2_1_1 = new JLabel("FEATURES");
 		lblNewLabel_2_1_1.setForeground(new Color(255, 255, 255));
@@ -307,26 +303,132 @@ public class AdminDashboard extends JFrame {
 		panel_5.setBounds(253, 85, 921, 493);
 		frame.getContentPane().add(panel_5);
 
-		btnIssueBook.addActionListener(new ActionListener() {
-		    @Override
+		
+
+		
+		
+
+		// Initialize the table model correctly first (put this right after creating the table)
+		DefaultTableModel model = new DefaultTableModel(
+		    new Object[][] {}, // Start with no data
+		    new String[] {"BOOK ID", "NAME", "AUTHOR"}
+		);
+		table.setModel(model);
+
+		// Then implement the delete button action listener
+		btnNewButton_2_1.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
-		        // Create an instance of userinfo and display it
-		        userinfo userInfoFrame = new userinfo();
-		        userInfoFrame.setVisible(true); // Assuming userinfo extends JFrame
+		        // Get the current model
+		        DefaultTableModel model = (DefaultTableModel) table.getModel();
 		        
-		        // Dispose of the current AdminDashboard frame
-		        dispose();
+		        // Get selected row
+		        int selectedRow = table.getSelectedRow();
+		        
+		        if (selectedRow != -1) { // Check if a row is selected
+		            // Ask for confirmation
+		            int response = JOptionPane.showConfirmDialog(
+		                frame,
+		                "Are you sure you want to delete this book?",
+		                "Confirm Delete",
+		                JOptionPane.YES_NO_OPTION,
+		                JOptionPane.QUESTION_MESSAGE
+		            );
+		            
+		            if (response == JOptionPane.YES_OPTION) {
+		                // Remove the row from the model
+		                model.removeRow(selectedRow);
+		                
+		                // Refresh the table
+		                table.revalidate();
+		                table.repaint();
+		                
+		                // Update the IDs of remaining rows
+		                for (int i = 0; i < model.getRowCount(); i++) {
+		                    model.setValueAt(i + 1, i, 0);
+		                }
+		                
+		                // Show success message
+		                JOptionPane.showMessageDialog(frame,
+		                    "Book deleted successfully",
+		                    "Success",
+		                    JOptionPane.INFORMATION_MESSAGE);
+		                
+		                // Clear the text fields
+		                textField.setText("");
+		                textField_1.setText("");
+		                textField_2.setText("");
+		            }
+		        } else {
+		            JOptionPane.showMessageDialog(frame,
+		                "Please select a book to delete",
+		                "No Selection",
+		                JOptionPane.WARNING_MESSAGE);
+		        }
 		    }
 		});
 
-		
-		
+		// Add button implementation (for reference)
+		btnNewButton_2_1_1.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        String bookTitle = textField_1.getText().trim();
+		        String bookAuthor = textField_2.getText().trim();
 
+		        if (!bookTitle.isEmpty() && !bookAuthor.isEmpty()) {
+		            DefaultTableModel model = (DefaultTableModel) table.getModel();
+		            Object[] newRow = {model.getRowCount() + 1, bookTitle, bookAuthor};
+		            model.addRow(newRow);
+		            
+		            // Clear the input fields
+		            textField_1.setText("");
+		            textField_2.setText("");
+		            
+		            // Refresh the table
+		            table.revalidate();
+		            table.repaint();
+		            
+		            JOptionPane.showMessageDialog(frame,
+		                "Book added successfully",
+		                "Success",
+		                JOptionPane.INFORMATION_MESSAGE);
+		        } else {
+		            JOptionPane.showMessageDialog(frame,
+		                "Please enter both title and author",
+		                "Error",
+		                JOptionPane.ERROR_MESSAGE);
+		        }
+		    }
+		});
+		
+		
+		btnMember.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        String userEmail = textField_3.getText().trim();
+		        String userName = textField_4.getText().trim();
 
-		
-		
-		
+		        if (!userEmail.isEmpty() && !userName.isEmpty()) {
+		            // Assuming you have a 'Library' class to manage users
+		            Library library = new Library(); // Replace with how you get the library instance
+		            library.registerUser(userName, userEmail); 
+
+		            // Clear the input fields
+		            textField_3.setText("");
+		            textField_4.setText("");
+
+		            // Optionally: Display a success message
+		            JOptionPane.showMessageDialog(frame,
+		                    "User added successfully!",
+		                    "Success",
+		                    JOptionPane.INFORMATION_MESSAGE);
+		        } else {
+		            JOptionPane.showMessageDialog(frame,
+		                    "Please enter both user email and name",
+		                    "Error",
+		                    JOptionPane.ERROR_MESSAGE);
+		        }
+		    }
+		});
 		
 		
 	}
 }
+
