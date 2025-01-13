@@ -1,0 +1,106 @@
+package Admin;
+
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
+import javax.swing.ImageIcon;
+import javax.swing.JTable;
+import javax.swing.JScrollPane;
+import javax.swing.table.DefaultTableModel;
+import java.awt.Font;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+
+public class SearchBook extends JFrame {
+
+	private static final long serialVersionUID = 1L;
+	private JPanel contentPane;
+	private final JPanel panel = new JPanel();
+	private JTable table;
+	private JTextField textField;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					SearchBook frame = new SearchBook();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public SearchBook() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 317, 463);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		panel.setBounds(0, 0, 301, 447);
+		contentPane.add(panel);
+		panel.setLayout(null);
+		
+		JButton btnNewButton = new JButton("Enter");
+		btnNewButton.setBounds(109, 307, 89, 23);
+		panel.add(btnNewButton);
+		
+		textField = new JTextField();
+		textField.setBounds(45, 270, 217, 20);
+		panel.add(textField);
+		textField.setColumns(10);
+		
+		JLabel lblNewLabel_1 = new JLabel("Title of the Book");
+		lblNewLabel_1.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 21));
+		lblNewLabel_1.setBounds(69, 239, 166, 20);
+		panel.add(lblNewLabel_1);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(45, 45, 217, 183);
+		panel.add(scrollPane);
+		
+		table = new JTable();
+		scrollPane.setViewportView(table);
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+				{null},
+				{null},
+				{null},
+				{null},
+				{null},
+				{null},
+				{null},
+				{null},
+				{null},
+				{null},
+				{null},
+				{null},
+				{null},
+				{null},
+				{null},
+			},
+			new String[] {
+				"Title of the Book"
+			}
+		));
+		table.getColumnModel().getColumn(0).setPreferredWidth(135);
+		
+		JLabel lblNewLabel = new JLabel("New label");
+		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\User\\Downloads\\bg estiik (1).jpg"));
+		lblNewLabel.setBounds(0, 0, 301, 423);
+		panel.add(lblNewLabel);
+	}
+
+}
