@@ -27,7 +27,7 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.UIManager;
 
 public class AdminDashboard extends JFrame {
-
+	
 	private JFrame frame;
 	private JTable table;
 	private JTextField textField;
@@ -427,6 +427,23 @@ public class AdminDashboard extends JFrame {
 		        }
 		    }
 		});
+		
+		btnIssueBook.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        // Get the table model from the main table
+		        DefaultTableModel adminTableModel = (DefaultTableModel) table.getModel();
+
+		        // Create an instance of SearchBook and pass the table model
+		        SearchBook searchBookWindow = new SearchBook(adminTableModel);
+
+		        // Make the SearchBook window visible
+		        searchBookWindow.setVisible(true);
+		    }
+		});
+
+
+		
+		
 		
 		
 	}
